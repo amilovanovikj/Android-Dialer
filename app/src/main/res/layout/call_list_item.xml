@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:padding="10dp"
+    android:background="@drawable/back">
+
+    <TextView
+        android:id="@+id/call"
+        android:layout_weight=".50"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_width="wrap_content" />
+
+    <ImageView
+        android:id="@+id/ivCall"
+        android:layout_weight=".05"
+        android:layout_height="50dp"
+        android:background="@color/backgroundColor"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/ic_call_image"
+        android:contentDescription="@string/call"
+        android:layout_width="wrap_content" />
+
+</LinearLayout>
