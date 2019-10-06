@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +25,14 @@ class Dialer {
         for (Contact c : contacts) {
             contactMap.put(c, new TreeSet<>());
         }
+    }
+
+    public Contact getContactWithNumber(String number){
+        return contactMap.keySet()
+                .stream()
+                .filter(contact -> contact.getNumbers().contains(number))
+                .findFirst()
+                .orElse(new Contact("Unknown", Arrays.asList(number)));
     }
 
     public void readCalls(InputStream in) throws IOException {

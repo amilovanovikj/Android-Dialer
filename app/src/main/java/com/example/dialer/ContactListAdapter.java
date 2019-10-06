@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.ContactViewHolder> {
@@ -57,7 +58,8 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             Contact item = itemsList.get(position);
             Intent intent = new Intent(v.getContext(), ContactDetailsActivity.class);
             intent.putExtra("contact_name", item.getName());
-            intent.putStringArrayListExtra("contact_numbers", item.getNumbers());
+            ArrayList<String> contactNumbers = new ArrayList<>(item.getNumbers());
+            intent.putStringArrayListExtra("contact_numbers", contactNumbers);
             v.getContext().startActivity(intent);
         }
     }

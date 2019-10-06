@@ -4,5 +4,8 @@
     <string name="calls">Calls</string>
     <string name="contacts">Contacts</string>
     <string name="call">Call</string>
+    <string name="busy">BUSY</string>
+    <string name="dialing">DIALING</string>
     <string name="contactImage">ContactImage</string>
+    <string name="hanging_up">HANGING UP</string>
 </resources>

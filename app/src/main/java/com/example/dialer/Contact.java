@@ -6,10 +6,10 @@ import java.util.Comparator;
 import java.util.List;
 
 class Contact implements Comparable<Contact> {
-    private ArrayList<String> numbers;
+    private List<String> numbers;
     private String name;
 
-    public ArrayList<String> getNumbers() {
+    public List<String> getNumbers() {
         return numbers;
     }
 
@@ -17,7 +17,7 @@ class Contact implements Comparable<Contact> {
         return name;
     }
 
-    public Contact(String name, ArrayList<String> numbers){
+    public Contact(String name, List<String> numbers){
         this.name = name;
         this.numbers = numbers;
     }

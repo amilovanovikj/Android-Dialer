@@ -16,7 +16,7 @@
         android:textStyle="bold"
         android:background="@color/colorPrimary"
         android:textColor="@color/backgroundColor"
-        app:layout_constraintDimensionRatio="h,3:2"
+        app:layout_constraintDimensionRatio="3:2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
