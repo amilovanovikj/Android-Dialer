@@ -4,36 +4,27 @@ import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import java.util.*;
 
 public class MainActivity extends AppCompatActivity {
     public static Dialer DIALER;
-    private RecyclerView contactRecyclerView;
-    private ContactListAdapter contactAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        List<Contact> contacts = new ArrayList<>();
-        fillContactList(contacts);
-        DIALER = new Dialer(contacts);
-        contactRecyclerView = findViewById(R.id.contactRecyclerView);
-        contactAdapter = new ContactListAdapter(this, DIALER.getContacts());
-        contactRecyclerView.setAdapter(contactAdapter);
-        contactRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        createDialer();
+        createTabLayout();
 
-
+        // TODO: Add functionality to the fab
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setImageResource(R.drawable.ic_add_for_fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -42,6 +33,34 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
+        });
+    }
+
+    private void createDialer() {
+        List<Contact> contacts = new ArrayList<>();
+        fillContactList(contacts);
+        DIALER = new Dialer(contacts);
+    }
+
+    private void createTabLayout() {
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.contacts));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.calls));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        final ViewPager viewPager = findViewById(R.id.pager);
+        final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {}
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {}
         });
     }
 
@@ -62,27 +81,5 @@ public class MainActivity extends AppCompatActivity {
         }
         List<String> numbers = Collections.singletonList("070226615");
         contacts.add(new Contact("Andrej Milovanovikj", numbers));
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }
