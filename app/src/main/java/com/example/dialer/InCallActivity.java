@@ -16,6 +16,7 @@ import java.util.*;
 
 public class InCallActivity extends AppCompatActivity {
     private static final String PHONE_NUMBER = "phone_number";
+    private FloatingActionButton fab;
     private boolean muted = false;
     private boolean onSpeaker = false;
 
@@ -29,15 +30,15 @@ public class InCallActivity extends AppCompatActivity {
         TextView contactNameInCall = findViewById(R.id.contactNameInCall);
         TextView contactNumberInCall = findViewById(R.id.contactNumberInCall);
         Timer timer = new Timer();
-        FloatingActionButton fab = findViewById(R.id.fabEndCall);
+        fab = findViewById(R.id.fabEndCall);
         String phoneNumber = getIntent().getStringExtra(PHONE_NUMBER);
         Contact contact = MainActivity.DIALER.findContactInMap(phoneNumber);
 
         contactNameInCall.setText(contact.getName());
         contactNumberInCall.setText(phoneNumber);
 
-        decideIfBusy(callDuration, fab);
-        setTimersAndListeners(timer,fab, callDuration);
+        decideIfBusy(callDuration);
+        setTimersAndListeners(timer, callDuration);
         //MainActivity.DIALER
     }
 
@@ -63,7 +64,7 @@ public class InCallActivity extends AppCompatActivity {
         muted = !muted;
     }
 
-    private void decideIfBusy(TextView callDuration, FloatingActionButton fab) {
+    private void decideIfBusy(TextView callDuration) {
         Random rand = new Random();
         int r = rand.nextInt(10);
         if(r < 2){
@@ -88,14 +89,13 @@ public class InCallActivity extends AppCompatActivity {
                     finish();
                 }
             };
-            fab.setEnabled(false);
-            makeCall("B");
+            finishCall("B");
             blinkTimer.start();
         }
     }
 
-    public void setTimersAndListeners(Timer timer, FloatingActionButton fab, TextView callDuration){
-        setFabListener(timer, fab, callDuration);
+    public void setTimersAndListeners(Timer timer, TextView callDuration){
+        setFabListener(timer, callDuration);
         scheduleTimer(timer, callDuration);
     }
 
@@ -126,19 +126,18 @@ public class InCallActivity extends AppCompatActivity {
         }, 5000, 1000);
     }
 
-    private void setFabListener(Timer timer, FloatingActionButton fab, TextView callDuration) {
+    private void setFabListener(Timer timer, TextView callDuration) {
         fab.setOnClickListener(v -> {
             if(callDuration.getText().toString().equals("DIALING")){
-                makeCall("M");
+                finishCall("M");
                 callDuration.setText(R.string.hanging_up);
             }
             else {
-                makeCall("D");
+                finishCall("D");
                 String timestamp = callDuration.getText().toString();
                 callDuration.setText("HANGING UP\n" + timestamp);
                 callDuration.setTextSize(20);
             }
-            fab.setEnabled(false);
             pauseBeforeHangUp(timer, callDuration);
         });
     }
@@ -168,7 +167,7 @@ public class InCallActivity extends AppCompatActivity {
         blinkTimer.start();
     }
 
-    private void makeCall(String type){
+    private void finishCall(String type){
         TextView contactNumberInCall = findViewById(R.id.contactNumberInCall);
         TextView callDuration = findViewById(R.id.callDuration);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -179,5 +178,11 @@ public class InCallActivity extends AppCompatActivity {
             duration = "0:00:00";
         else duration = callDuration.getText().toString();
         MainActivity.DIALER.makeCall(number,currentDateTime,duration,type);
+
+        ImageView ivMic = findViewById(R.id.ivMic);
+        ImageView ivSpeaker = findViewById(R.id.ivSpeaker);
+        ivMic.setClickable(false);
+        ivSpeaker.setClickable(false);
+        fab.setEnabled(false);
     }
 }

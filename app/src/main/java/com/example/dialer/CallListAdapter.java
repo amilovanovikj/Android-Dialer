@@ -24,7 +24,7 @@ public class CallListAdapter extends RecyclerView.Adapter<CallListAdapter.CallVi
     @NonNull
     @Override
     public CallViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View mItemView = inflater.inflate(R.layout.call_list_item, parent, false);
+        View mItemView = inflater.inflate(R.layout.number_list_item, parent, false);
         return new CallViewHolder(mItemView, this);
     }
 
