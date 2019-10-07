@@ -48,21 +48,13 @@
         android:id="@+id/ivMic"
         android:layout_width="55dp"
         android:layout_height="55dp"
+        android:clickable="true"
+        android:onClick="muteClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/fabEndCall"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/callDuration"
         app:srcCompat="@drawable/ic_call_unmuted" />
-
-    <ImageView
-        android:id="@+id/ivSpeaker"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/fabEndCall"
-        app:layout_constraintTop_toBottomOf="@+id/callDuration"
-        app:srcCompat="@drawable/ic_turn_speaker_on" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabEndCall"
@@ -76,5 +68,17 @@
         app:layout_constraintTop_toBottomOf="@+id/callDuration"
         app:maxImageSize="45dp"
         app:srcCompat="@drawable/ic_end_call" />
+
+    <ImageView
+        android:id="@+id/ivSpeaker"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:clickable="true"
+        android:onClick="speakerClicked"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/fabEndCall"
+        app:layout_constraintTop_toBottomOf="@+id/callDuration"
+        app:srcCompat="@drawable/ic_turn_speaker_on" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

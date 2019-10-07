@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -14,6 +16,8 @@ import java.util.*;
 
 public class InCallActivity extends AppCompatActivity {
     private static final String PHONE_NUMBER = "phone_number";
+    private boolean muted = false;
+    private boolean onSpeaker = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +39,28 @@ public class InCallActivity extends AppCompatActivity {
         decideIfBusy(callDuration, fab);
         setTimersAndListeners(timer,fab, callDuration);
         //MainActivity.DIALER
+    }
+
+    public void speakerClicked(View view){
+        ImageView ivSpeaker = findViewById(R.id.ivSpeaker);
+        if(onSpeaker){
+            ivSpeaker.setImageResource(R.drawable.ic_turn_speaker_on);
+        }
+        else {
+            ivSpeaker.setImageResource(R.drawable.ic_turn_speaker_off);
+        }
+        onSpeaker = !onSpeaker;
+    }
+
+    public void muteClicked(View view){
+        ImageView ivMic = findViewById(R.id.ivMic);
+        if(muted){
+            ivMic.setImageResource(R.drawable.ic_call_unmuted);
+        }
+        else {
+            ivMic.setImageResource(R.drawable.ic_call_muted);
+        }
+        muted = !muted;
     }
 
     private void decideIfBusy(TextView callDuration, FloatingActionButton fab) {
