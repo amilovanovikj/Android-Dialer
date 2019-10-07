@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class InCallActivity extends AppCompatActivity {
@@ -21,22 +22,22 @@ public class InCallActivity extends AppCompatActivity {
         setContentView(R.layout.activity_in_call);
 
         TextView callDuration = findViewById(R.id.callDuration);
-        TextView contactName = findViewById(R.id.contactNameInCall);
+        TextView contactNameInCall = findViewById(R.id.contactNameInCall);
         TextView contactNumberInCall = findViewById(R.id.contactNumberInCall);
         Timer timer = new Timer();
         FloatingActionButton fab = findViewById(R.id.fabEndCall);
         String phoneNumber = getIntent().getStringExtra(PHONE_NUMBER);
-        Contact contact = MainActivity.DIALER.getContactWithNumber(phoneNumber);
+        Contact contact = MainActivity.DIALER.findContactInMap(phoneNumber);
 
-        contactName.setText(contact.getName());
+        contactNameInCall.setText(contact.getName());
         contactNumberInCall.setText(phoneNumber);
 
-        decideIfBusy(callDuration);
+        decideIfBusy(callDuration, fab);
         setTimersAndListeners(timer,fab, callDuration);
         //MainActivity.DIALER
     }
 
-    private void decideIfBusy(TextView callDuration) {
+    private void decideIfBusy(TextView callDuration, FloatingActionButton fab) {
         Random rand = new Random();
         int r = rand.nextInt(10);
         if(r < 2){
@@ -61,8 +62,9 @@ public class InCallActivity extends AppCompatActivity {
                     finish();
                 }
             };
+            fab.setEnabled(false);
+            makeCall("B");
             blinkTimer.start();
-            // TODO: Add busy call to dialer
         }
     }
 
@@ -101,15 +103,16 @@ public class InCallActivity extends AppCompatActivity {
     private void setFabListener(Timer timer, FloatingActionButton fab, TextView callDuration) {
         fab.setOnClickListener(v -> {
             if(callDuration.getText().toString().equals("DIALING")){
-                // TODO: Add missed call to dialer
+                makeCall("M");
                 callDuration.setText(R.string.hanging_up);
             }
             else {
-                // TODO: Add dialed call to dialer
+                makeCall("D");
                 String timestamp = callDuration.getText().toString();
                 callDuration.setText("HANGING UP\n" + timestamp);
                 callDuration.setTextSize(20);
             }
+            fab.setEnabled(false);
             pauseBeforeHangUp(timer, callDuration);
         });
     }
@@ -137,5 +140,18 @@ public class InCallActivity extends AppCompatActivity {
             }
         };
         blinkTimer.start();
+    }
+
+    private void makeCall(String type){
+        TextView contactNumberInCall = findViewById(R.id.contactNumberInCall);
+        TextView callDuration = findViewById(R.id.callDuration);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        String currentDateTime = sdf.format(new Date());
+        String number = contactNumberInCall.getText().toString();
+        String duration;
+        if(callDuration.getText().toString().split(":").length != 3)
+            duration = "0:00:00";
+        else duration = callDuration.getText().toString();
+        MainActivity.DIALER.makeCall(number,currentDateTime,duration,type);
     }
 }

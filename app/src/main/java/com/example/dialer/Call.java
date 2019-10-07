@@ -1,10 +1,10 @@
 package com.example.dialer;
 
 import java.util.Comparator;
+import java.util.Date;
 
 class Call implements Comparable<Call> {
-    private String number, duration, type;
-    private long timestamp;
+    private String number, duration, type, timestamp;
 
     public String getNumber() {
         return number;
@@ -18,11 +18,11 @@ class Call implements Comparable<Call> {
         return type;
     }
 
-    public long getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public Call(String number, String duration, long timestamp, String type) {
+    public Call(String number, String duration, String timestamp, String type) {
         this.number = number;
         this.duration = duration;
         this.timestamp = timestamp;

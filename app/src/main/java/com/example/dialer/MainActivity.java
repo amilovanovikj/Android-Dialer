@@ -25,18 +25,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ArrayList<Contact> contacts = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            ArrayList<String> numbers = new ArrayList<>();
-            for (int j = 0; j < 10; j++) {
-                numbers.add(("0708765" + i) + j);
-            }
-            Contact c = new Contact("Contact" + i, numbers);
-            contacts.add(c);
-        }
+        List<Contact> contacts = new ArrayList<>();
+        fillContactList(contacts);
         DIALER = new Dialer(contacts);
         contactRecyclerView = findViewById(R.id.contactRecyclerView);
-        contactAdapter = new ContactListAdapter(this, contacts);
+        contactAdapter = new ContactListAdapter(this, DIALER.getContacts());
         contactRecyclerView.setAdapter(contactAdapter);
         contactRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -50,6 +43,25 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    private void fillContactList(List<Contact> contacts) {
+        for (int i = 0; i < 10; i++) {
+            ArrayList<String> numbers1 = new ArrayList<>();
+            ArrayList<String> numbers2 = new ArrayList<>();
+            Random rand = new Random();
+            int numbersCount = rand.nextInt(4);
+            for (int j = 0; j <= numbersCount; j++) {
+                numbers1.add(("0708765" + i) + j);
+                numbers2.add(("0785678" + i) + j);
+            }
+            Contact c = new Contact(String.format("Contact %02d", i + 1), numbers1);
+            contacts.add(c);
+            c = new Contact("Contact " + (i + 11), numbers2);
+            contacts.add(c);
+        }
+        List<String> numbers = Collections.singletonList("070226615");
+        contacts.add(new Contact("Andrej Milovanovikj", numbers));
     }
 
     @Override

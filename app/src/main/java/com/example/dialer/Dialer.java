@@ -6,14 +6,19 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 class Dialer {
     private Map<Contact, TreeSet<Call>> contactMap;
@@ -27,28 +32,22 @@ class Dialer {
         }
     }
 
-    public Contact getContactWithNumber(String number){
-        return contactMap.keySet()
-                .stream()
-                .filter(contact -> contact.getNumbers().contains(number))
-                .findFirst()
-                .orElse(new Contact("Unknown", Arrays.asList(number)));
-    }
-
     public void readCalls(InputStream in) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(in));
         String line;
         while((line = br.readLine()) != null) {
             String[] parts = line.split(" ");
             String number = parts[0];
-            long timestamp = Long.parseLong(parts[1]);
-            String duration = parts[2];
-            String type = parts[3];
+            String date = parts[1];
+            String time = parts[2];
+            String timestamp = date + " " + time;
+            String duration = parts[3];
+            String type = parts[4];
             makeCall(number, timestamp, duration, type);
         }
     }
 
-    public void makeCall(String number, long timestamp, String duration, String type){
+    public void makeCall(String number, String timestamp, String duration, String type){
         Call call = new Call(number, duration, timestamp, type);
         try{
             checkForExceptions(call);
@@ -63,7 +62,7 @@ class Dialer {
     public void printCallsOfType(OutputStream outputStream, String type){
         PrintWriter pw = new PrintWriter(outputStream);
         cachedCalls.get(type)
-                .forEach(each -> pw.printf("%-15s%10d%15s%10s\n",
+                .forEach(each -> pw.printf("%-15s%10s%15s%10s\n",
                         each.getNumber(), each.getTimestamp(), each.getDuration(), each.getType()));
         pw.flush();
     }
@@ -91,7 +90,7 @@ class Dialer {
         });
     }
 
-    private Contact findContactInMap(String number) {
+    public Contact findContactInMap(String number) {
         Contact newContact = contactMap.keySet()
                 .stream()
                 .filter(contact -> contact.getNumbers().contains(number))
@@ -122,5 +121,9 @@ class Dialer {
             String message = "Exception for call from number " + call.getNumber() + ", reasons: ";
             throw new WrongCallException(message + exceptionsList.toString());
         }
+    }
+
+    public List<Contact> getContacts() {
+        return new ArrayList<>(contactMap.keySet());
     }
 }
