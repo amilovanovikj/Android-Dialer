@@ -4,11 +4,10 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="70dp"
-    android:padding="10dp"
-    android:background="@drawable/back">
+    android:padding="10dp" >
 
     <TextView
-        android:id="@+id/call"
+        android:id="@+id/number"
         android:layout_weight=".50"
         android:layout_height="match_parent"
         android:gravity="center_vertical"

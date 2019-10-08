@@ -11,6 +11,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.view.View;
 
+import java.text.ParseException;
 import java.util.*;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,6 +41,37 @@ public class MainActivity extends AppCompatActivity {
         List<Contact> contacts = new ArrayList<>();
         fillContactList(contacts);
         DIALER = new Dialer(contacts);
+        fillCallList();
+    }
+
+    private void fillCallList() {
+        List<String> calls = new ArrayList<>();
+        calls.add("070876500 13/07/2019 10:58 1:04:23 D");
+        calls.add("070876501 14/07/2019 09:33 0:00:00 M");
+        calls.add("070876510 13/07/2019 14:25 0:00:00 B");
+        calls.add("070567890 15/07/2019 15:41 0:02:31 D");
+        calls.add("070876530 16/07/2019 16:53 0:00:00 M");
+        calls.add("070876540 13/07/2019 19:19 0:00:00 B");
+        calls.add("070876550 12/07/2019 22:05 0:32:21 D");
+        calls.add("070876560 13/07/2019 01:03 0:00:00 M");
+        calls.add("070876570 14/07/2019 07:59 0:00:00 B");
+        calls.add("070876580 11/07/2019 23:54 0:03:35 D");
+        calls.add("070876590 12/07/2019 20:20 0:00:00 B");
+        calls.add("070567810 11/07/2019 12:37 0:00:00 M");
+        calls.add("070876550 10/07/2019 12:53 0:07:01 D");
+        calls.add("070567820 10/07/2019 12:56 0:00:00 B");
+        calls.add("070543654 10/07/2019 12:48 0:00:00 M");
+        calls.add("070567822 14/07/2019 22:18 0:12:47 D");
+        calls.add("070567851 11/07/2019 20:35 0:00:00 M");
+        calls.add("070567870 12/07/2019 14:58 0:00:00 B");
+        calls.add("070567891 11/07/2019 08:43 0:00:21 D");
+        calls.add("070567840 12/07/2019 02:01 0:00:00 M");
+        calls.add("070567801 15/07/2019 17:24 0:00:00 B");
+        try {
+            DIALER.readCalls(calls);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     private void createTabLayout() {
@@ -79,7 +111,5 @@ public class MainActivity extends AppCompatActivity {
             c = new Contact("Contact " + (i + 11), numbers2);
             contacts.add(c);
         }
-        List<String> numbers = Collections.singletonList("070226615");
-        contacts.add(new Contact("Andrej Milovanovikj", numbers));
     }
 }

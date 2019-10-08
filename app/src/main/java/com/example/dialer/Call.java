@@ -1,10 +1,13 @@
 package com.example.dialer;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
 
 class Call implements Comparable<Call> {
-    private String number, duration, type, timestamp;
+    private String number, duration, type;
+    Date timestamp;
 
     public String getNumber() {
         return number;
@@ -18,11 +21,11 @@ class Call implements Comparable<Call> {
         return type;
     }
 
-    public String getTimestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 
-    public Call(String number, String duration, String timestamp, String type) {
+    public Call(String number, String duration, Date timestamp, String type) {
         this.number = number;
         this.duration = duration;
         this.timestamp = timestamp;
@@ -38,6 +41,7 @@ class Call implements Comparable<Call> {
 
     @Override
     public String toString(){
-        return String.format("%-15s%15d%15s", number, timestamp, duration);
+        DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        return String.format("%-15s%15s%15s", number, sdf.format(timestamp), duration);
     }
 }

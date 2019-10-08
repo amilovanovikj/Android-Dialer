@@ -1,23 +1,10 @@
 package com.example.dialer;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.*;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 class Dialer {
@@ -32,22 +19,21 @@ class Dialer {
         }
     }
 
-    public void readCalls(InputStream in) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(in));
-        String line;
-        while((line = br.readLine()) != null) {
+    public void readCalls(List<String> calls) throws ParseException {
+        for(String line : calls) {
             String[] parts = line.split(" ");
             String number = parts[0];
             String date = parts[1];
             String time = parts[2];
-            String timestamp = date + " " + time;
+            DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            Date timestamp = sdf.parse(date + " " + time);
             String duration = parts[3];
             String type = parts[4];
             makeCall(number, timestamp, duration, type);
         }
     }
 
-    public void makeCall(String number, String timestamp, String duration, String type){
+    public void makeCall(String number, Date timestamp, String duration, String type){
         Call call = new Call(number, duration, timestamp, type);
         try{
             checkForExceptions(call);
@@ -73,8 +59,12 @@ class Dialer {
         pw.flush();
     }
 
-    public void printAllCalls(OutputStream outputStream){
-        contactMap.keySet().forEach(contact -> printCallsByContact(outputStream, contact));
+    public List<Call> getAllCalls(){
+        return contactMap.values()
+                .stream()
+                .flatMap(Collection::stream)
+                .sorted(Comparator.comparing(Call::getTimestamp))
+                .collect(Collectors.toList());
     }
 
     private void addCallToContactMap(Call call, Contact newContact) {
@@ -117,10 +107,10 @@ class Dialer {
         if(call.getDuration().split(":").length != 3){
             exceptionsList.add("Wrong duration format " + call.getDuration());
         }
-        if(!exceptionsList.isEmpty()){
+        /*if(!exceptionsList.isEmpty()){
             String message = "Exception for call from number " + call.getNumber() + ", reasons: ";
             throw new WrongCallException(message + exceptionsList.toString());
-        }
+        }*/
     }
 
     public List<Contact> getContacts() {

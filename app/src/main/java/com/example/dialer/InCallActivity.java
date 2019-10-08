@@ -170,8 +170,7 @@ public class InCallActivity extends AppCompatActivity {
     private void finishCall(String type){
         TextView contactNumberInCall = findViewById(R.id.contactNumberInCall);
         TextView callDuration = findViewById(R.id.callDuration);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        String currentDateTime = sdf.format(new Date());
+        Date currentDateTime = new Date();
         String number = contactNumberInCall.getText().toString();
         String duration;
         if(callDuration.getText().toString().split(":").length != 3)

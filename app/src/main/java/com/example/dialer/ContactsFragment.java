@@ -3,6 +3,7 @@ package com.example.dialer;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,6 +22,7 @@ public class ContactsFragment extends Fragment {
         contactAdapter = new ContactListAdapter(view.getContext(), MainActivity.DIALER.getContacts());
         contactRecyclerView.setAdapter(contactAdapter);
         contactRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        contactRecyclerView.addItemDecoration(new DividerItemDecoration(contactRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
         return view;
     }
 

@@ -1,6 +1,7 @@
 package com.example.dialer;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class ContactDetailsActivity extends AppCompatActivity {
     private RecyclerView numberRecyclerView;
-    private CallListAdapter numbersAdapter;
+    private NumberListAdapter numbersAdapter;
     private static final String CONTACT_NAME = "contact_name";
     private static final String CONTACT_NUMBERS = "contact_numbers";
 
@@ -22,9 +23,10 @@ public class ContactDetailsActivity extends AppCompatActivity {
         String name = getIntent().getStringExtra(CONTACT_NAME);
         List<String> numbers = getIntent().getStringArrayListExtra(CONTACT_NUMBERS);
         numberRecyclerView = findViewById(R.id.numberRecyclerView);
-        numbersAdapter = new CallListAdapter(this,numbers);
+        numbersAdapter = new NumberListAdapter(this,numbers);
         numberRecyclerView.setAdapter(numbersAdapter);
         numberRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        numberRecyclerView.addItemDecoration(new DividerItemDecoration(numberRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
         TextView contactName = findViewById(R.id.contactName);
         contactName.setText(name);
     }
