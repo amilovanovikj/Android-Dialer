@@ -10,15 +10,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class NumberListAdapter extends RecyclerView.Adapter<NumberListAdapter.NumberViewHolder> {
     public final List<String> itemsList;
     private LayoutInflater inflater;
 
-    public NumberListAdapter(Context context, List<String> items) {
+    public NumberListAdapter(Context context, Set<String> items) {
         inflater = LayoutInflater.from(context);
-        this.itemsList = items;
+        this.itemsList = new ArrayList<>(items);
     }
 
     @NonNull

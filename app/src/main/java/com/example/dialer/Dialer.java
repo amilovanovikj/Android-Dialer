@@ -35,16 +35,12 @@ class Dialer {
 
     public void makeCall(String number, Date timestamp, String duration, String type){
         Call call = new Call(number, duration, timestamp, type);
-        try{
-            checkForExceptions(call);
-            Contact newContact = findContactInMap(number);
-            addCallToCachedCalls(call);
-            addCallToContactMap(call, newContact);
-        }catch (WrongCallException e){
-            System.out.println(e.getMessage());
-        }
+        Contact newContact = findContactInMap(number);
+        addCallToCachedCalls(call);
+        addCallToContactMap(call, newContact);
     }
 
+    // TODO: Change method
     public void printCallsOfType(OutputStream outputStream, String type){
         PrintWriter pw = new PrintWriter(outputStream);
         cachedCalls.get(type)
@@ -53,18 +49,16 @@ class Dialer {
         pw.flush();
     }
 
-    public void printCallsByContact(OutputStream outputStream, Contact contact){
-        PrintWriter pw = new PrintWriter(outputStream);
-        contactMap.get(contact).forEach(call -> pw.println(contact.toString() + call.toString()));
-        pw.flush();
-    }
-
     public List<Call> getAllCalls(){
         return contactMap.values()
                 .stream()
                 .flatMap(Collection::stream)
-                .sorted(Comparator.comparing(Call::getTimestamp))
+                .sorted(Comparator.comparing(Call::getTimestamp).reversed())
                 .collect(Collectors.toList());
+    }
+
+    public List<Call> getCallsFromContact(Contact c){
+        return new ArrayList<>(contactMap.get(c));
     }
 
     private void addCallToContactMap(Call call, Contact newContact) {
@@ -91,29 +85,15 @@ class Dialer {
                     .stream()
                     .filter(c -> c.getName().equals("Unknown"))
                     .findFirst()
-                    .orElse(new Contact("Unknown", new ArrayList<>()));
+                    .orElse(new Contact("Unknown", new HashSet<>()));
         }
         return newContact;
     }
 
-    private void checkForExceptions(Call call) throws WrongCallException {
-        List<String> exceptionsList = new ArrayList<>();
-        if(call.getNumber().length() != 9){
-            exceptionsList.add("Number must be 9 characters long");
-        }
-        if(!call.getNumber().startsWith("07")){
-            exceptionsList.add("Number must start on 07");
-        }
-        if(call.getDuration().split(":").length != 3){
-            exceptionsList.add("Wrong duration format " + call.getDuration());
-        }
-        /*if(!exceptionsList.isEmpty()){
-            String message = "Exception for call from number " + call.getNumber() + ", reasons: ";
-            throw new WrongCallException(message + exceptionsList.toString());
-        }*/
-    }
-
     public List<Contact> getContacts() {
-        return new ArrayList<>(contactMap.keySet());
+        return contactMap.keySet()
+                .stream()
+                .filter(contact -> !contact.getName().equals("Unknown"))
+                .collect(Collectors.toList());
     }
 }

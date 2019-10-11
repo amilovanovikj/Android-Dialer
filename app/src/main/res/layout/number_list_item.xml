@@ -11,7 +11,7 @@
         android:layout_weight=".50"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
         android:textStyle="bold"
@@ -19,12 +19,13 @@
 
     <ImageView
         android:id="@+id/ivCall"
-        android:layout_weight=".05"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
+        android:padding="8dp"
+        android:layout_weight=".05"
         android:background="@color/backgroundColor"
-        android:scaleType="fitCenter"
-        app:srcCompat="@drawable/ic_call_image"
         android:contentDescription="@string/call"
-        android:layout_width="wrap_content" />
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/ic_call_image" />
 
 </LinearLayout>

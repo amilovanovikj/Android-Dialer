@@ -9,17 +9,16 @@
     tools:showIn="@layout/activity_main">
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tab_layout"
+        android:id="@+id/main_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="65dp">
 
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/pager"
+        android:id="@+id/main_pager"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@id/tab_layout" />
-
+        android:layout_below="@id/main_tab_layout" />
 
 </RelativeLayout>

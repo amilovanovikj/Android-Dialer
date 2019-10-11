@@ -12,19 +12,23 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class CallsFragment extends Fragment {
-    private RecyclerView callRecyclerView;
-    private CallListAdapter callAdapter;
+    private View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_calls, container, false);
-        // TODO: Add call list logic
-        callRecyclerView = view.findViewById(R.id.callRecyclerView);
-        callAdapter = new CallListAdapter(view.getContext(), MainActivity.DIALER.getAllCalls());
-        callRecyclerView.setAdapter(callAdapter);
-        callRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        callRecyclerView.addItemDecoration(new DividerItemDecoration(callRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
+        view = inflater.inflate(R.layout.fragment_calls, container, false);
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        RecyclerView callRecyclerView = view.findViewById(R.id.callRecyclerView);
+        CallListAdapter callAdapter = new CallListAdapter(view.getContext(), MainActivity.DIALER.getAllCalls());
+        callRecyclerView.setAdapter(callAdapter);
+        callRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        callRecyclerView.addItemDecoration(new DividerItemDecoration(callRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
+        LayoutInflater.from(getActivity())
+                .inflate(R.layout.fragment_calls, callRecyclerView, false);
+    }
 }

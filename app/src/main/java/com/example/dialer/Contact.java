@@ -4,12 +4,13 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 class Contact implements Comparable<Contact> {
-    private List<String> numbers;
+    private Set<String> numbers;
     private String name;
 
-    public List<String> getNumbers() {
+    public Set<String> getNumbers() {
         return numbers;
     }
 
@@ -17,7 +18,7 @@ class Contact implements Comparable<Contact> {
         return name;
     }
 
-    public Contact(String name, List<String> numbers){
+    public Contact(String name, Set<String> numbers){
         this.name = name;
         this.numbers = numbers;
     }

@@ -1,6 +1,8 @@
 package com.example.dialer;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -11,7 +13,6 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class InCallActivity extends AppCompatActivity {
